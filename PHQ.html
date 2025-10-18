@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHQ-15 Self-Assessment</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  table { border-collapse: collapse; width: 100%; max-width: 600px; margin-bottom: 20px; }
+  th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+  th { background-color: #f2f2f2; }
+  .result { font-weight: bold; font-size: 1.2em; }
+</style>
+</head>
+<body>
+
+<h2>PHQ-15 Self-Assessment</h2>
+<p>Check the box that applies for each symptom (0 = Not bothered, 1 = Bothered a little, 2 = Bothered a lot):</p>
+
+<table>
+  <tr>
+    <th>#</th>
+    <th>Symptom</th>
+    <th>0</th>
+    <th>1</th>
+    <th>2</th>
+  </tr>
+  <tbody id="symptomTable">
+    <!-- Rows will be inserted by JS -->
+  </tbody>
+</table>
+
+<button onclick="calculateScore()">Calculate Score</button>
+<p class="result" id="result"></p>
+
+<script>
+const symptoms = [
+  "Stomach pain",
+  "Back pain",
+  "Pain in your arms, legs, or joints (knees, hips, etc.)",
+  "Menstrual cramps or other problems with your periods (if applicable)",
+  "Headaches",
+  "Chest pain",
+  "Dizziness",
+  "Fainting spells",
+  "Feeling your heart pound or race",
+  "Shortness of breath",
+  "Pain or problems during sexual intercourse",
+  "Constipation, loose bowels, or diarrhea",
+  "Nausea, gas, or indigestion",
+  "Feeling tired or having low energy",
+  "Trouble sleeping"
+];
+
+const tableBody = document.getElementById("symptomTable");
+
+symptoms.forEach((symptom, i) => {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td>${i + 1}</td>
+    <td style="text-align:left">${symptom}</td>
+    <td><input type="radio" name="symptom${i}" value="0" checked></td>
+    <td><input type="radio" name="symptom${i}" value="1"></td>
+    <td><input type="radio" name="symptom${i}" value="2"></td>
+  `;
+  tableBody.appendChild(row);
+});
+
+function calculateScore() {
+  let total = 0;
+  for (let i = 0; i < symptoms.length; i++) {
+    const value = document.querySelector(`input[name="symptom${i}"]:checked`).value;
+    total += parseInt(value);
+  }
+
+  let severity = "";
+  if (total <= 4) severity = "Minimal";
+  else if (total <= 9) severity = "Low";
+  else if (total <= 14) severity = "Moderate";
+  else severity = "High";
+
+  document.getElementById("result").innerText = `Total Score: ${total} → Severity: ${severity}`;
+}
+</script>
+
+</body>
+</html>
